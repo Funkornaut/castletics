@@ -1,1 +1,18 @@
-{}
+{
+    "accountAssociation": {
+        "header": "REPLACE_WITH_YOUR_HEADER",
+        "payload": "REPLACE_WITH_YOUR_PAYLOAD",
+        "signature": "REPLACE_WITH_YOUR_SIGNATURE"
+    },
+    "frame": {
+        "version": "1",
+        "name": "Castletics",
+        "iconUrl": "https://castletics-cnpr.vercel.app/icon.png",
+        "homeUrl": "https://castletics-cnpr.vercel.app",
+        "imageUrl": "https://castletics-cnpr.vercel.app/og-image.png",
+        "buttonTitle": "Start Workout",
+        "splashImageUrl": "https://castletics-cnpr.vercel.app/splash.png",
+        "splashBackgroundColor": "#ffffff",
+        "webhookUrl": "https://castletics-cnpr.vercel.app/api/webhook"
+    }
+}

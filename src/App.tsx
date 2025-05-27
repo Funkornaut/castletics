@@ -10,7 +10,6 @@ function App() {
 
   return (
     <>
-      <div>Mini App + Vite + TS + React + Wagmi</div>
       <ConnectMenu />
       <WorkoutList />
     </>
