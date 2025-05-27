@@ -1,7 +1,7 @@
 import { sdk } from "@farcaster/frame-sdk";
 import { useEffect } from "react";
 import { useAccount, useConnect, useSignMessage } from "wagmi";
-import { getRandomWorkout, getWorkoutsByCategory, workouts } from "./workouts";
+import { workouts } from "./workouts";
 
 function App() {
   useEffect(() => {
