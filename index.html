@@ -1,13 +1,30 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="farcaster:frame" content="https://castletics-cnpr.vercel.app/.well-known/farcaster.json" />
-    <title>Castletics</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="farcaster:frame" content="https://castletics-cnpr.vercel.app/.well-known/farcaster.json" />
+  <meta name="fc:frame" content='{
+      "version":"next",
+      "imageUrl":"https://castletics-cnpr.vercel.app/castletics-og.png",
+      "button":{
+        "title":"Start Workout",
+        "action":{
+          "type":"launch_frame",
+          "name":"Castletics",
+          "url":"https://castletics-cnpr.vercel.app",
+          "splashImageUrl":"https://castletics-cnpr.vercel.app/castletics-splash.png",
+          "splashBackgroundColor":"#ffffff"
+        }
+      }
+    }' />
+  <title>Castletics</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>
