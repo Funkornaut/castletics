@@ -1,12 +1,22 @@
 import { sdk } from "@farcaster/frame-sdk";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAccount, useConnect, useSignMessage } from "wagmi";
-import { workouts } from "./workouts";
+import { workouts, getRandomWorkout } from "./workouts";
 
 function App() {
+  const [randomWorkout, setRandomWorkout] = useState<null | typeof workouts[0]>(null);
+
   useEffect(() => {
     sdk.actions.ready();
   }, []);
+
+  const handleRandomWorkout = () => {
+    setRandomWorkout(getRandomWorkout());
+  };
+
+  const handleShowWorkoutOfTheDay = () => {
+    setRandomWorkout(null);
+  };
 
   return (
     <div
@@ -24,7 +34,17 @@ function App() {
     >
       <h1 style={{ color: 'var(--castletics-teal)', letterSpacing: '2px', marginBottom: '1.5rem' }}>Castletics</h1>
       <ConnectMenu />
-      <WorkoutList />
+      <div style={{ margin: '1rem 0' }}>
+        <button type="button" onClick={handleRandomWorkout} style={{ marginRight: '0.5rem' }}>
+          Random Workout
+        </button>
+        {randomWorkout && (
+          <button type="button" onClick={handleShowWorkoutOfTheDay}>
+            Show Workout of the Day
+          </button>
+        )}
+      </div>
+      <WorkoutDisplay workout={randomWorkout || getWorkoutOfTheDay()} isRandom={!!randomWorkout} />
     </div>
   );
 }
@@ -74,8 +94,7 @@ function SignButton() {
   );
 }
 
-function WorkoutList() {
-  const workout = getWorkoutOfTheDay();
+function WorkoutDisplay({ workout, isRandom }: { workout: typeof workouts[0], isRandom: boolean }) {
   return (
     <div
       style={{
@@ -84,18 +103,22 @@ function WorkoutList() {
         borderRadius: '1rem',
         boxShadow: '0 4px 24px 0 rgba(0,0,0,0.10)',
         padding: '2rem',
-        maxWidth: '400px',
+        width: '360px',
+        minHeight: '340px',
         margin: '2rem auto',
+        wordBreak: 'break-word',
       }}
     >
-      <h2 style={{ color: 'var(--castletics-purple)', marginBottom: '0.5rem' }}>Workout of the Day</h2>
+      <h2 style={{ color: 'var(--castletics-purple)', marginBottom: '0.5rem' }}>
+        {isRandom ? 'Random Workout' : 'Workout of the Day'}
+      </h2>
       <h3 style={{ color: 'var(--castletics-teal)', marginTop: 0 }}>{workout.name}</h3>
       <p><strong>Category:</strong> {workout.category}</p>
       <p><strong>Duration:</strong> {workout.duration} minutes</p>
       <h4 style={{ color: 'var(--castletics-greenish-teal)', marginTop: '1.5rem' }}>Exercises:</h4>
       <ul style={{ paddingLeft: '1.2rem' }}>
         {workout.exercises.map((exercise: string, idx: number) => (
-          <li key={idx} style={{ marginBottom: '0.5rem' }}>{exercise}</li>
+          <li key={idx} style={{ marginBottom: '0.5rem', wordBreak: 'break-word' }}>{exercise}</li>
         ))}
       </ul>
     </div>
