@@ -1,4 +1,10 @@
 :root {
+  --castletics-teal:rgb(0, 174, 186);
+  --castletics-purple:rgb(110, 75, 217);
+  --castletics-navy:#192232;
+  --castletics-off-white:rgb(228, 214, 248);
+  --castletics-greenish-teal:rgb(1, 191, 141);
+
   background-color: #181818;
   color: rgba(255, 255, 255, 0.87);
   color-scheme: light dark;
