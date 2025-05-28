@@ -5,9 +5,43 @@ import { workouts, getRandomWorkout } from "./workouts";
 
 function App() {
   const [randomWorkout, setRandomWorkout] = useState<null | typeof workouts[0]>(null);
+  const [fid, setFid] = useState<string | null>(null);
+  const [streak, setStreak] = useState<{ streak: number; lastWorkout: string | null } | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     sdk.actions.ready();
+    async function authenticate() {
+      setLoading(true);
+      try {
+        // Step 1: Get nonce
+        const nonceRes = await fetch('/api/nonce');
+        const { nonce } = await nonceRes.json();
+
+        // Step 2: Sign in with Farcaster
+        const { message, signature } = await sdk.actions.signIn({ nonce });
+
+        // Step 3: Verify sign-in and get fid
+        const verifyRes = await fetch('/api/verify-signin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message, signature }),
+        });
+        const verifyData = await verifyRes.json();
+        if (verifyData.fid) {
+          setFid(verifyData.fid);
+
+          // Step 4: Fetch streak
+          const streakRes = await fetch(`/api/streak?fid=${verifyData.fid}`);
+          const streakData = await streakRes.json();
+          setStreak(streakData);
+        }
+      } catch (e) {
+        // handle error
+      }
+      setLoading(false);
+    }
+    authenticate();
   }, []);
 
   const handleRandomWorkout = () => {
@@ -17,6 +51,17 @@ function App() {
   const handleShowWorkoutOfTheDay = () => {
     setRandomWorkout(null);
   };
+
+  async function handleWorkoutComplete() {
+    if (!fid) return;
+    const res = await fetch('/api/streak', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fid }),
+    });
+    const data = await res.json();
+    setStreak(data);
+  }
 
   return (
     <div
@@ -45,6 +90,18 @@ function App() {
         )}
       </div>
       <WorkoutDisplay workout={randomWorkout || getWorkoutOfTheDay()} isRandom={!!randomWorkout} />
+      {loading ? (
+        <div>Loading Farcaster session...</div>
+      ) : (
+        fid && (
+          <div style={{ margin: '1rem 0' }}>
+            <h3>Farcaster ID: {fid}</h3>
+            <h3>Current Streak: {streak?.streak ?? 0}</h3>
+            <h4>Last Workout: {streak?.lastWorkout ?? 'Never'}</h4>
+            <button onClick={handleWorkoutComplete}>Complete Workout</button>
+          </div>
+        )
+      )}
     </div>
   );
 }
@@ -132,3 +189,6 @@ function getWorkoutOfTheDay() {
 }
 
 export default App;
+
+
+// Fid: 18144
