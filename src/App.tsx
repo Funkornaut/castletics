@@ -10,38 +10,48 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    sdk.actions.ready();
-    async function authenticate() {
-      setLoading(true);
+    const initialize = async () => {
       try {
-        // Step 1: Get nonce
-        const nonceRes = await fetch('/api/nonce');
-        const { nonce } = await nonceRes.json();
+        setLoading(true);
 
-        // Step 2: Sign in with Farcaster
-        const { message, signature } = await sdk.actions.signIn({ nonce });
+        // Initialize the Frame SDK
+        await sdk.actions.ready();
 
-        // Step 3: Verify sign-in and get fid
-        const verifyRes = await fetch('/api/verify-signin', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message, signature }),
-        });
-        const verifyData = await verifyRes.json();
-        if (verifyData.fid) {
-          setFid(verifyData.fid);
+        // Get the user's FID from Farcaster context
+        const context = await sdk.context;
+        const userFid = context.user?.fid;
 
-          // Step 4: Fetch streak
-          const streakRes = await fetch(`/api/streak?fid=${verifyData.fid}`);
+        if (userFid) {
+          const fidString = userFid.toString();
+          setFid(fidString);
+
+          // Fetch streak data for the user
+          const streakRes = await fetch(`/api/streak?fid=${fidString}`);
+          const streakData = await streakRes.json();
+          setStreak(streakData);
+        } else {
+          console.error('No user FID found in Farcaster context');
+          // Fallback for development/testing - you can remove this later
+          const fallbackFid = "18144";
+          setFid(fallbackFid);
+          const streakRes = await fetch(`/api/streak?fid=${fallbackFid}`);
           const streakData = await streakRes.json();
           setStreak(streakData);
         }
-      } catch (e) {
-        // handle error
+      } catch (error) {
+        console.error('Error initializing app:', error);
+        // Fallback for development/testing
+        const fallbackFid = "18144";
+        setFid(fallbackFid);
+        const streakRes = await fetch(`/api/streak?fid=${fallbackFid}`);
+        const streakData = await streakRes.json();
+        setStreak(streakData);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-    }
-    authenticate();
+    };
+
+    initialize();
   }, []);
 
   const handleRandomWorkout = () => {
