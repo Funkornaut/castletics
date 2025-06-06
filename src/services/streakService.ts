@@ -2,7 +2,6 @@ import { supabase } from '../lib/supabase';
 import type { Database } from '../lib/database.types';
 
 type Streak = Database['public']['Tables']['streaks']['Row'];
-type StreakUpdate = Database['public']['Tables']['streaks']['Update'];
 
 export class StreakService {
     /**
@@ -38,9 +37,7 @@ export class StreakService {
                 throw new Error('Streak record not found for user');
             }
 
-            const today = new Date();
             const workoutDateOnly = new Date(workoutDate.getFullYear(), workoutDate.getMonth(), workoutDate.getDate());
-            const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
             let newCurrentStreak = streak.current_streak;
             let newLongestStreak = streak.longest_streak;

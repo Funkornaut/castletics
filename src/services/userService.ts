@@ -2,7 +2,6 @@ import { supabase } from '../lib/supabase';
 import type { Database } from '../lib/database.types';
 
 type User = Database['public']['Tables']['users']['Row'];
-type UserInsert = Database['public']['Tables']['users']['Insert'];
 type UserUpdate = Database['public']['Tables']['users']['Update'];
 
 export class UserService {

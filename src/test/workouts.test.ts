@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { workouts, getRandomWorkout } from '../workouts';
 
 describe('Workouts Module', () => {
@@ -111,8 +111,6 @@ describe('Workouts Module', () => {
 
     describe('workout categories', () => {
         it('should have valid workout categories', () => {
-            const validCategories = ['Strength', 'Cardio', 'Flexibility', 'HIIT', 'Core', 'Full Body', 'Upper Body', 'Lower Body'];
-
             workouts.forEach((workout) => {
                 // Categories should be one of the expected ones or at least be a non-empty string
                 expect(typeof workout.category).toBe('string');

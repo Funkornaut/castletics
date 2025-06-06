@@ -3,7 +3,6 @@ import type { Database } from '../lib/database.types';
 import { StreakService } from './streakService';
 
 type Workout = Database['public']['Tables']['workouts']['Row'];
-type WorkoutInsert = Database['public']['Tables']['workouts']['Insert'];
 type WorkoutUpdate = Database['public']['Tables']['workouts']['Update'];
 
 export interface WorkoutWithUserInfo extends Workout {
