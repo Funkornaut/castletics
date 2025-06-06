@@ -22,14 +22,19 @@ Create a fun, sticky, and rewarding experience for daily users of the Castletics
 
 ---
 
-### 2. Proof-of-Workout Posts
+### 2. Proof-of-Workout System (v0.1 IMPLEMENTED)
 
-* **Prompt after workout:** Take 5–10 second video
-* **Auto-share to Farcaster with tag to guild**
-* **Social Boosts:**
+**Current Implementation: Timer-Based Proof**
+* **Check-in Flow:** User selects workout → starts timer → completes minimum time → claims workout
+* **Minimum Time Validation:** 70% of target workout duration (minimum 5 minutes)
+* **Privacy-First:** No photos/videos required - perfect for anons
+* **Accountability:** Real-time timer with pause/resume functionality
+* **Visual Feedback:** Progress bar and completion notifications
 
-  * More reactions = more XP/token rewards
-  * Verified by reactions (🏁, 💪, 🔥)
+**Future Enhancements (v0.2+):**
+* **"Proof of Sweat" AI Analysis:** Optional photo upload for sweat detection on clothing/equipment
+* **Wearable Integration:** Apple Watch, Fitbit data verification
+* **Social Proof:** Anonymous location check-ins, workout buddy verification
 
 ---
 
@@ -112,11 +117,33 @@ Create a fun, sticky, and rewarding experience for daily users of the Castletics
 
 ---
 
-## Next Steps
+## Implementation Status
+
+### ✅ Completed (v0.1)
+* [x] **Timer-Based Proof System** - Privacy-friendly workout validation
+* [x] **Streak System Backend** - Database tracking and API endpoints
+* [x] **Basic Workout Library** - 40+ predefined workouts across categories
+* [x] **User Authentication** - Farcaster Auth Kit integration
+* [x] **Database Schema** - Users, streaks, workouts tables with Supabase
+
+### 🔧 In Progress
+* [ ] UI/UX Polish - Styling and responsive design
+* [ ] Error Handling - Robust error states and loading indicators
+
+### 📋 Next Steps (v0.2+)
 * [ ] Develop XP/leveling backend logic 
-* [ ] Design streak tracking UI
-* [ ] Build video proof submission & cast integration
+* [ ] Design streak tracking UI enhancements
 * [ ] Implement guild creation and leaderboard tracking
+* [ ] Build "proof of sweat" AI photo analysis
+* [ ] Add wearable device integration (Apple Watch, Fitbit)
 * [ ] Define metadata schema for fitness card NFTs
 * [ ] Create spin-the-wheel game logic
+* [ ] Enhanced Farcaster cast integration
+
+### 🚀 Ready to Ship (v0.1)
+The current implementation provides a solid foundation with:
+- **Privacy-first approach** suitable for anonymous users
+- **Timer-based accountability** without invasive photo requirements  
+- **Flexible architecture** ready for future AI and wearable enhancements
+- **Proven database structure** handling users, streaks, and workouts
 

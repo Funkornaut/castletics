@@ -2,6 +2,7 @@ import { sdk } from "@farcaster/frame-sdk";
 import { useEffect, useState } from "react";
 import { useAccount, useConnect, useSignMessage } from "wagmi";
 import { workouts, getRandomWorkout } from "./workouts";
+import { WorkoutTimer } from "./components/WorkoutTimer";
 
 function App() {
   const [randomWorkout, setRandomWorkout] = useState<null | typeof workouts[0]>(null);
@@ -73,6 +74,8 @@ function App() {
     setStreak(data);
   }
 
+  const currentWorkout = randomWorkout || getWorkoutOfTheDay();
+
   return (
     <div
       style={{
@@ -89,6 +92,19 @@ function App() {
     >
       <h1 style={{ color: 'var(--castletics-teal)', letterSpacing: '2px', marginBottom: '1.5rem' }}>Castletics</h1>
       <ConnectMenu />
+
+      {loading ? (
+        <div>Loading Farcaster session...</div>
+      ) : (
+        fid && (
+          <div style={{ margin: '1rem 0', textAlign: 'center' }}>
+            <h3>Farcaster ID: {fid}</h3>
+            <h3>Current Streak: {streak?.streak ?? 0} 🔥</h3>
+            <h4>Last Workout: {streak?.lastWorkout ?? 'Never'}</h4>
+          </div>
+        )
+      )}
+
       <div style={{ margin: '1rem 0' }}>
         <button type="button" onClick={handleRandomWorkout} style={{ marginRight: '0.5rem' }}>
           Random Workout
@@ -99,18 +115,15 @@ function App() {
           </button>
         )}
       </div>
-      <WorkoutDisplay workout={randomWorkout || getWorkoutOfTheDay()} isRandom={!!randomWorkout} />
-      {loading ? (
-        <div>Loading Farcaster session...</div>
-      ) : (
-        fid && (
-          <div style={{ margin: '1rem 0' }}>
-            <h3>Farcaster ID: {fid}</h3>
-            <h3>Current Streak: {streak?.streak ?? 0}</h3>
-            <h4>Last Workout: {streak?.lastWorkout ?? 'Never'}</h4>
-            <button onClick={handleWorkoutComplete}>Complete Workout</button>
-          </div>
-        )
+
+      <WorkoutDisplay workout={currentWorkout} isRandom={!!randomWorkout} />
+
+      {!loading && fid && (
+        <WorkoutTimer
+          workout={currentWorkout}
+          onWorkoutComplete={handleWorkoutComplete}
+          disabled={loading}
+        />
       )}
     </div>
   );
